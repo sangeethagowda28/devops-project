@@ -1,0 +1,5 @@
+minikube*
+*.bin
+__pycache__
+*.pyc
+
