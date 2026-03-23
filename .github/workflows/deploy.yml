@@ -1,57 +1,37 @@
-name: Build and Deploy
+name: CI-CD Pipeline
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
-  build:
+  build-and-update:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout app repo
-      - name: Checkout code
+      - name: Checkout app repo
         uses: actions/checkout@v3
 
-      # Login to Docker Hub
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      # Build Docker image
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }} .
+        run: |
+          docker build -t your-dockerhub-username/app:${{ github.sha }} .
 
-      # Push Docker image
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker push your-dockerhub-username/app:${{ github.sha }}
 
-      # Install yq (safe YAML editor)
-      - name: Install yq
-        run: sudo snap install yq
-
-      # Update Kubernetes manifests repo
-      - name: Update manifest repo
+      - name: Update manifests repo
         run: |
           git clone https://${{ secrets.PAT_TOKEN }}@github.com/sangeethagowda28/k8s-manifests.git
           cd k8s-manifests
 
-          yq e -i '.spec.template.spec.containers[0].image = "'${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}'"' deployment.yaml
+          sed -i 's|image: .*|image: your-dockerhub-username/app:${{ github.sha }}|' deployment.yaml
 
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git add deployment.yaml
-          git commit -m "Update image to ${{ github.sha }}" || echo "No changes to commit"
+          git add .
+          git commit -m "Update image to ${{ github.sha }}"
           git push
-      - name: Debug token
-        run: |
-         if [ -z "${{ secrets.PAT_TOKEN }}" ]; then
-         echo "TOKEN IS EMPTY"
-         exit 1
-         else
-         echo "Token exists"
-         fi
