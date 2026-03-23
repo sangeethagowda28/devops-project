@@ -41,4 +41,8 @@ jobs:
         run: |
          cd k8s-manifests
          git remote -v
-      
+      - name: Debug Git
+        run: |
+         cd k8s-manifests
+         git remote -v
+         git config --list
