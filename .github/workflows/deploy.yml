@@ -36,7 +36,7 @@ jobs:
       # Update Kubernetes manifests repo
       - name: Update manifest repo
         run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/sangeethagowda28/k8s-manifests.git
+          git clone https://${{ secrets.PAT_TOKEN }}@github.com/sangeethagowda28/k8s-manifests.git
           cd k8s-manifests
 
           yq e -i '.spec.template.spec.containers[0].image = "'${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}'"' deployment.yaml
