@@ -33,7 +33,7 @@ jobs:
       # Clone manifests repo and update image safely
       - name: Update manifest repo
         run: |
-          git clone https://${{ secrets.GITHUB_TOKEN_PAT }}@github.com/sangeethagowda28/k8s-manifests.git
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/sangeethagowda28/k8s-manifests.git
           cd k8s-manifests
 
           yq e -i '.spec.template.spec.containers[0].image = "'${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}'"' deployment.yaml
