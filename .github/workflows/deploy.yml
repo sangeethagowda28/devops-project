@@ -27,7 +27,7 @@ jobs:
           git clone https://${{ secrets.PAT_TOKEN }}@github.com/sangeethagowda28/k8s-manifests.git
           cd k8s-manifests
 
-          sed -i 's|image: .*|image: your-dockerhub-username/app:${{ github.sha }}|' deployment.yaml
+          sed -i 's|image: .*|image: sangu7991/app:${{ github.sha }}|' deployment.yaml
 
           git config user.name "github-actions"
           git config user.email "actions@github.com"
