@@ -23,3 +23,21 @@ spec:
         - containerPort: 5000
       imagePullSecrets:
       - name: regcred
+    strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 1
+  livenessProbe:
+  httpGet:
+    path: /
+    port: 5000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+  readinessProbe:
+  httpGet:
+    path: /
+    port: 5000
+  initialDelaySeconds: 5
+  periodSeconds: 5
