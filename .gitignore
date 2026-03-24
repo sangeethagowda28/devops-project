@@ -3,3 +3,4 @@ minikube*
 __pycache__
 *.pyc
 
+k8s-manifests/
