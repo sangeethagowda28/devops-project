@@ -31,7 +31,7 @@ jobs:
         run: |
          cd k8s-manifests
 
-         sed -i 's|image: .*|image: sangeethagowda28/app:${{ github.sha }}|' deployment.yaml
+         sed -i 's|image: .*|image: sangu7991/app:${{ github.sha }}|' deployment.yaml
 
          git config user.name "github-actions"
          git config user.email "actions@github.com"
