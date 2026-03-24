@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: devops-app
-        image: sangu7991/devops-project:v1
+        image: sangu7991/app:latest
         ports:
         - containerPort: 5000
       imagePullSecrets:
