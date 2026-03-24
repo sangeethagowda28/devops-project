@@ -18,6 +18,8 @@ spec:
     spec:
       containers:
       - name: devops-app
-        image: sangu7991/devops-project:v1
+        image: sangu7991/my-app:v1
         ports:
         - containerPort: 5000
+      imagePullSecrets:
+      - name: regcred
